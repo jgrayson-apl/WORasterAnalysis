@@ -389,8 +389,7 @@ define([
        */
       const applyPreset = () => {
         this.parameterInfos.forEach(parameterInfo => {
-          //parameterInfo.weight = parameterInfo.values[presetsSelect.value];
-          parameterInfo.slider.values = [parameterInfo.weight];
+          parameterInfo.slider.values = [parameterInfo.values[presetsSelect.value]];
         });
         doAnalysis();
       };
@@ -400,7 +399,6 @@ define([
        */
       const resetWeights = () => {
         this.parameterInfos.forEach(parameterInfo => {
-          //parameterInfo.weight = 0;
           parameterInfo.slider.values = [0];
         });
         doAnalysis();
