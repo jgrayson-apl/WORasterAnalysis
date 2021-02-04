@@ -389,6 +389,7 @@ define([
        */
       const applyPreset = () => {
         this.parameterInfos.forEach(parameterInfo => {
+          // SET SLIDERS TO PRESETS //
           parameterInfo.slider.values = [parameterInfo.values[presetsSelect.value]];
         });
         doAnalysis();
@@ -399,6 +400,7 @@ define([
        */
       const resetWeights = () => {
         this.parameterInfos.forEach(parameterInfo => {
+          // SET SLIDERS TO ZERO //
           parameterInfo.slider.values = [0];
         });
         doAnalysis();
