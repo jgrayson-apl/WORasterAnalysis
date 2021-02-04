@@ -201,7 +201,6 @@ define([
         //
         const rasterAnalysisLayer = view.map.layers.find(layer => { return (layer.title === "WO Raster Analysis"); });
         rasterAnalysisLayer.load().then(() => {
-          // rasterAnalysisLayer
 
           // INITIAL LAYER OPACITY AND VISIBILITY //
           rasterAnalysisLayer.opacity = 1.0;
@@ -327,7 +326,7 @@ define([
             // SET INITIAL VALUE //
             parameterSlider.values = [defaultValue];
 
-            // ASSOCIATE SLIDER AND PERCENT NODE WITH PARAMETER //
+            // ASSOCIATE SLIDER AND PERCENT NODE WITH PARAMETER INFO //
             parameterInfo.slider = parameterSlider;
             parameterInfo.percentNode = percentNode;
 
