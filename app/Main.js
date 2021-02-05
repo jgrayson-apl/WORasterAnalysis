@@ -306,6 +306,7 @@ define([
             const parameterSlider = new Slider({
               container: sliderNode,
               min: 0, max: 100,
+              values: [defaultValue],
               precision: 0,
               snapOnClickEnabled: true,
               visibleElements: { labels: false, rangeLabels: false }
@@ -320,9 +321,9 @@ define([
               // NOTIFY OF WEIGHT CHANGE //
               this.emit("weight-change", {});
             });
-            
+
             // SET INITIAL VALUE //
-            parameterSlider.values = [defaultValue];
+            parameterInfo.weight = defaultValue;
 
             // ASSOCIATE SLIDER AND PERCENT NODE WITH PARAMETER INFO //
             parameterInfo.slider = parameterSlider;
