@@ -269,11 +269,6 @@ define([
         // GET PARAMETER CONFIG //
         esriRequest('./config/parameters.json').then(response => {
 
-          /**
-           *  For each parameter:
-           *   ...here's some general guidance for creating parameter nodes, labels, sliders, etc...
-           */
-
           //
           // PARAMETER INFOS ARE THE DEFAULT PARAMETERS AUGMENTED WITH UI ELEMENTS //
           //
@@ -315,16 +310,13 @@ define([
               snapOnClickEnabled: true,
               visibleElements: { labels: false, rangeLabels: false }
             });
-            parameterSlider.watch('values', values => {
+            parameterSlider.watch('values', (values) => {
               // SLIDER VALUE //
               const value = values[0];
-
               // CURRENT PARAMETER WEIGHT //
               parameterInfo.weight = value;
-
               // DISABLE LABEL //
               labelNode.classList.toggle('btn-disabled', (value === 0));
-
               // NOTIFY OF WEIGHT CHANGE //
               this.emit("weight-change", {});
             });
@@ -350,7 +342,6 @@ define([
      * @param rasterAnalysisLayer
      */
     initializeAnalysis: function(view, rasterAnalysisLayer){
-
 
       // SELECTED COUNT //
       const selectionCountLabel = document.getElementById('selection-count-label');
@@ -405,7 +396,7 @@ define([
           // SET SLIDERS TO PRESETS //
           parameterInfo.slider.values = [parameterInfo.values[presetsSelect.value]];
         });
-        doAnalysis();
+        setTimeout(doAnalysis, 1000);
       };
 
       /**
@@ -416,7 +407,7 @@ define([
           // SET SLIDERS TO ZERO //
           parameterInfo.slider.values = [0];
         });
-        doAnalysis();
+        setTimeout(doAnalysis, 1000);
       };
 
       /**
