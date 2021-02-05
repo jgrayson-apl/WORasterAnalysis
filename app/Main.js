@@ -129,6 +129,7 @@ define([
         view.ui.add(home, { position: "top-left", index: 1 });
 
         // BASEMAP TOGGLE //
+        // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#basemap
         const basemapToggle = new BasemapToggle({
           view: view,
           nextBasemap: "topo"
