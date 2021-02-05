@@ -226,7 +226,7 @@ body * {
 }
 
 .parameter-name {
-  width   : 350px;
+  width : 350px;
 }
 
 .parameter-slider {
@@ -236,4 +236,12 @@ body * {
 
 .parameter-percent {
   width : 50px;
+}
+
+.esri-slider__thumb {
+  border-color : var(--theme-background-color);
+}
+
+.esri-slider__anchor:focus .esri-slider__thumb {
+  border-color : var(--theme-background-color);
 }

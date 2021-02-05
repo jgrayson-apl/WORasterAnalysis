@@ -320,7 +320,7 @@ define([
               // NOTIFY OF WEIGHT CHANGE //
               this.emit("weight-change", {});
             });
-
+            
             // SET INITIAL VALUE //
             parameterSlider.values = [defaultValue];
 
@@ -396,7 +396,7 @@ define([
           // SET SLIDERS TO PRESETS //
           parameterInfo.slider.values = [parameterInfo.values[presetsSelect.value]];
         });
-        setTimeout(doAnalysis, 1000);
+        setTimeout(doAnalysis, 500);
       };
 
       /**
@@ -407,7 +407,7 @@ define([
           // SET SLIDERS TO ZERO //
           parameterInfo.slider.values = [0];
         });
-        setTimeout(doAnalysis, 1000);
+        setTimeout(doAnalysis, 500);
       };
 
       /**
