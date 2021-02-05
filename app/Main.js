@@ -296,7 +296,7 @@ define([
             }
 
             const labelNode = domConstruct.create('div', {
-              className: 'parameter-name font-size--3',
+              className: 'parameter-name font-size--3 avenir-demi',
               innerHTML: parameterInfo.label
             }, paramNode);
             const sliderNode = domConstruct.create('div', {
@@ -304,7 +304,7 @@ define([
               'data-id': parameterInfo.rasterId,
             }, paramNode);
             const percentNode = domConstruct.create('div', {
-              className: 'parameter-percent font-size--3 text-right',
+              className: 'parameter-percent font-size--3 avenir-demi text-right',
               innerHTML: ''
             }, paramNode);
 
