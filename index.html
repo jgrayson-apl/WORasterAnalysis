@@ -74,16 +74,12 @@
         </div>
         <div id="list-panel" class="panel panel-white">
           <div class="content-col trailer-half">
-            <div class="content-row font-size-1 trailer-quarter">
-              <div class="font-size-0 avenir-demi">Analysis Settings</div>
-              <div>
-                <select id="presets-select" class="font-size--3">
-                  <option value="GI Center Defaults">GI Center Defaults</option>
-                  <option value="Biodiversity Defaults">Biodiversity Defaults</option>
-                </select>
-              </div>
-            </div>
-            <label id="nhd-label" class="trailer-half esri-interactive">
+            <div class="font-size-0 avenir-demi trailer-quarter">Analysis Settings</div>
+            <select id="presets-select" class="font-size--3 trailer-quarter select-full">
+              <option value="GI Center Defaults">GI Center Defaults</option>
+              <option value="Biodiversity Defaults">Biodiversity Defaults</option>
+            </select>
+            <label id="nhd-label" class="trailer-half esri-interactive hide">
               <input id="nhd-input" type="checkbox">
               <span class="font-size--3">Only Results with NHDPlus water flow > 1cfs</span>
             </label>
