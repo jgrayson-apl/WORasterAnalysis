@@ -316,14 +316,14 @@ define([
               visibleElements: { labels: false, rangeLabels: false }
             });
             parameterSlider.watch('values', values => {
+              // SLIDER VALUE //
               const value = values[0];
-              const hasValue = (value > 0);
-
-              labelNode.classList.toggle('btn-disabled', !hasValue);
-              //percentNode.innerHTML = hasValue ? `${value}%` : '';
 
               // CURRENT PARAMETER WEIGHT //
               parameterInfo.weight = value;
+
+              // DISABLE LABEL //
+              labelNode.classList.toggle('btn-disabled', (value === 0));
 
               // NOTIFY OF WEIGHT CHANGE //
               this.emit("weight-change", {});
@@ -370,7 +370,7 @@ define([
         selectionCountLabel.innerHTML = `${weightedOverlayParams.length} selected`;
 
         // ...HERE YOU CAN UPDATE THE PERCENT LABELS... //
-        weightedOverlayParams.forEach(parameterInfo => {
+        this.parameterInfos.forEach(parameterInfo => {
           console.info('RASTER ID: ', parameterInfo.rasterId, 'WEIGHT: ', parameterInfo.weight);
 
           // debug //
