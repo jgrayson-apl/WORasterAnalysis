@@ -278,16 +278,22 @@ define([
           // PARAMETER INFOS ARE THE DEFAULT PARAMETERS AUGMENTED WITH UI ELEMENTS //
           //
           this.parameterInfos = response.data.parameters;
-          this.parameterInfos.forEach(parameterInfo => {
+          this.parameterInfos.forEach((parameterInfo, parameterInfoIdx) => {
 
             const paramNode = domConstruct.create('div', {
-              className: 'parameter-node content-row'
+              className: 'parameter-node content-row tooltip tooltip-bottom tooltip-multiline',
+              'aria-label': parameterInfo.help
             }, parametersContainer);
 
+            // SHOW TOOLTIP ABOVE FOR BOTTOM HALF OF LIST //
+            if(parameterInfoIdx > (this.parameterInfos.length / 2)){
+              paramNode.classList.remove('tooltip-bottom');
+              paramNode.classList.add('tooltip-top');
+            }
+
             const labelNode = domConstruct.create('div', {
-              className: 'parameter-name font-size--3 tooltip tooltip-right tooltip-multiline',
-              innerHTML: parameterInfo.label,
-              'aria-label': parameterInfo.help
+              className: 'parameter-name font-size--3',
+              innerHTML: parameterInfo.label
             }, paramNode);
             const sliderNode = domConstruct.create('div', {
               className: 'parameter-slider',
@@ -345,18 +351,26 @@ define([
      */
     initializeAnalysis: function(view, rasterAnalysisLayer){
 
+
+      // SELECTED COUNT //
+      const selectionCountLabel = document.getElementById('selection-count-label');
+
       // WEIGHT CHANGE //
       this.on("weight-change", () => {
 
         // GET WEIGHTED OVERLAY PARAMS //
-        const weightedOverlayParams = this.parameterInfos.map(parameterInfo => {
-          return { id: parameterInfo.rasterId, wight: parameterInfo.weight };
-        });
-        console.info('weight-change: ', weightedOverlayParams);
+        //  - ONLY IF SET... //
+        const weightedOverlayParams = this.parameterInfos.reduce((paramList, parameterInfo) => {
+          return (parameterInfo.weight > 0)
+            ? paramList.concat({ id: parameterInfo.rasterId, wight: parameterInfo.weight })
+            : paramList;
+        }, []);
 
+        // SELECTED COUNT //
+        selectionCountLabel.innerHTML = `${weightedOverlayParams.length} selected`;
 
         // ...HERE YOU CAN UPDATE THE PERCENT LABELS... //
-        this.parameterInfos.forEach(parameterInfo => {
+        weightedOverlayParams.forEach(parameterInfo => {
           console.info('RASTER ID: ', parameterInfo.rasterId, 'WEIGHT: ', parameterInfo.weight);
 
           // debug //
@@ -413,9 +427,13 @@ define([
         console.info('ANALYSIS LAYER: ', rasterAnalysisLayer);
         console.info('NHD OPTION: ', nhdInput.checked);
 
-        const weightedOverlayParams = this.parameterInfos.map(parameterInfo => {
-          return { id: parameterInfo.rasterId, wight: parameterInfo.weight };
-        });
+        // GET WEIGHTED OVERLAY PARAMS //
+        //  - ONLY IF SET... //
+        const weightedOverlayParams = this.parameterInfos.reduce((paramList, parameterInfo) => {
+          return (parameterInfo.weight > 0)
+            ? paramList.concat({ id: parameterInfo.rasterId, wight: parameterInfo.weight })
+            : paramList;
+        }, []);
         console.info('WEIGHTED OVERLAY PARAMETERS: ', weightedOverlayParams);
 
         // rasterAnalysisLayer.renderingRule = {
@@ -426,6 +444,7 @@ define([
       }
 
       // DO INITIAL ANALYSIS //
+      this.emit("weight-change", {});
       doAnalysis();
 
     }

@@ -1,21 +1,210 @@
 {
   "parameters": [
     {
-      "rasterId": 0,
+      "rasterId": 9,
       "label": "Core Size (acres)",
-      "help": "Core Size (acres)",
+      "help": "Core area in acres",
       "values": {
         "GI Center Defaults": 40,
         "Biodiversity Defaults": 20
       }
     },
     {
-      "rasterId": 1,
+      "rasterId": 11,
       "label": "Core Compactness Ratio",
-      "help": "The ratio between......",
+      "help": "The ratio between the area of the core and the area of a circle with the same perimeter as the core",
+      "values": {
+        "GI Center Defaults": 2,
+        "Biodiversity Defaults": 2
+      }
+    },
+    {
+      "rasterId": 23,
+      "label": "Core Thickness (ft)",
+      "help": "Represents the deepest or thickest point within each core.  Essentially, it is the radius (in cells) of the largest circle that can be drawn within each core without including any cells outside the core.  Cores with greater “depth or thickness” are preferred because they represent larger and potentially safer interior core areas.",
+      "values": {
+        "GI Center Defaults": 10,
+        "Biodiversity Defaults": 10
+      }
+    },
+    {
+      "rasterId": 8,
+      "label": "Topographic Diversity",
+      "help": "The standard deviation of the topographic diversity from NED 30 meter resolution, using zonal statistics within a core.  The presumption is that the larger the deviation, the better for habitat potential.",
+      "values": {
+        "GI Center Defaults": 5,
+        "Biodiversity Defaults": 5
+      }
+    },
+    {
+      "rasterId": 6,
+      "label": "Soil Variety (SSURGO)",
+      "help": "The number of different SSURGO MUKEY units appearing within a core. These are mapunits from the Dept. of Agriculture’s, National Cooperative Soil Survey.  Variety in soils is a surrogate for diversity in habitat potential.  Greater variety should equate to greater habitat potential. Data have been collected over the last 100 years and are most intensively mapped in areas with high agricultural potential.  Data are missing for many national forests, natl. parks and arid lands.",
+      "values": {
+        "GI Center Defaults": 3,
+        "Biodiversity Defaults": 3
+      }
+    },
+    {
+      "rasterId": 7,
+      "label": "Stream Length Per Acre (NHD)",
+      "help": "Stream length (all types) in feet within a core / core area in acres. This captures the broadest possible collection of hydrologic features from the National Hydrography Dataset.  These may over represent the presence and availability of water, particularly in the southwest.",
       "values": {
         "GI Center Defaults": 0,
-        "Biodiversity Defaults": 22
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 24,
+      "label": "Wetlands Percentage (NWI)",
+      "help": "The area of wetlands in acres / core area in acres (from NWI – includes “Estuarine and marine”, “freshwater emergent”, or “freshwater forested/shrub” wetlands within a core). From the US Fish and Wildlife Service’s National Wetlands Inventory http://www.fws.gov/wetlands. Cores with more wetlands have better habitat potential than those with less.",
+      "values": {
+        "GI Center Defaults": 5,
+        "Biodiversity Defaults": 5
+      }
+    },
+    {
+      "rasterId": 20,
+      "label": "Flow Length Per Acre >1.0 CFS (NHD)",
+      "help": "The length of NHDPlus FTYPE (StreamRiver) and Q0001A => 1.0,  in cubic feet per second within a core / core area in acres. This is a measure of features with running water as modeled in the NHDPlusV2 database from the EPA and USGS https://www.epa.gov/waterdata/ nhdplus-national-hydrography-dataset-plus. This variable is to distinguish hydrologic features with active flows from intermittent, artificial or pipeline or canal features.",
+      "values": {
+        "GI Center Defaults": 10,
+        "Biodiversity Defaults": 10
+      }
+    },
+    {
+      "rasterId": 5,
+      "label": "Perennial Stream Length Per Acre",
+      "help": "Perennial stream length in feet within a core / core area in acres. Perennial streams are from the National Hydrography Dataset.",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 12,
+      "label": "Ecological Redundancy (TNC)",
+      "help": "Measures the number of TNC Ecoregions Systems in which a GAP Level 3 Ecological Systems occurs. The higher the number, the more Ecoregions an Ecological System appears in and the greater it’s redundancy.  Cores are scored with lowest redundancy value appearing within them.  Low and very low redundancy values represent cores containing unique Ecologicial Systems. This analysis reproduces the work by Jocelyn Aycrigg et. al. “Representations of Ecological Systems within the Protected Areas Network of the Continental United States” 2013 PLoS One (8)1 applied rather to finer resolution TNC Ecoregions units.",
+      "values": {
+        "GI Center Defaults": 5,
+        "Biodiversity Defaults": 10
+      }
+    },
+    {
+      "rasterId": 10,
+      "label": "Biodiversity Priority Index",
+      "help": "The intact core areas were overlaid with the Priority Index Layer (10 km) resolution surface described in the work by Clinton Jenkins et. al. “US protected lands mismatch biodiversity priorities” 4/2015 PNAS (112)16 http://www.pnas.org/cgi/doi/ 10.1073/ pnas.1418034112. The Priority Index score is a summary for each of 1200 Endemic species of the proportion of species range that is unprotected divided by the area of the species’ range.  Values are summed across all endemic species within a taxonomic group and across all taxonomic groups.  Cores falling within a priority index category are assigned that priority index value. Note that the nominal resolution of the Priority Index data is 10 Km.  Cores may or may not have endemic species or collections of endemic species within them.",
+      "values": {
+        "GI Center Defaults": 10,
+        "Biodiversity Defaults": 25
+      }
+    },
+    {
+      "rasterId": 14,
+      "label": "Endemic Species Max Count",
+      "help": "The maximum count of endemic species (trees, freshwater fish, amphibians, reptiles, birds, mammals) per core when overlaid with an Endemic Species dataset (10 KM) resolution from BiodiversityMapping.org",
+      "values": {
+        "GI Center Defaults": 10,
+        "Biodiversity Defaults": 10
+      }
+    },
+    {
+      "rasterId": 3,
+      "label": "MoBI Imperiled Species Count",
+      "help": "MoBI Imperiled Species Count",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 1,
+      "label": "Betweenness Centrality Percentage",
+      "help": "Betweenness Centrality Percentage",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 18,
+      "label": "Human Modified Mean",
+      "help": "The mean Theobald Human Modified values appearing in a core.  A measure of the degree of human modification, the index ranges from 0.0 for a virgin landscape condition to 1.0, for the most heavily modified areas. The average value for the United States is 0.375.  The data used to produce these values should be both more current and more detailed than the NLCD used for generating the cores.  Emphasis was given to attempting to map in particular, energy related development.  Theobald, DM (2013) A general model to quantify ecological integrity for landscape assessment and US Application. Landscape Ecol (2013) 28:1859-1874 doi: 10.1007/s10980-013-9941-6",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 22,
+      "label": "Soils SWDI (SSURGO)",
+      "help": "The Shannon-Weaver diversity index of SSURGO, MUKEY values appearing within a core. These are mapunits from the Dept. of Agriculture’s National Cooperative Soil Survey. Diversity in soils is a surrogate for diversity in habitat potential. Greater diversity is frequently associated with better habitat potential. Data have been collected over the last 100 years and are most intensively mapped in areas with high agricultural potential. Data are missing for many national forests, national parks and arid lands.",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 13,
+      "label": "Ecological Land Units SWDI",
+      "help": "The Shannon-Weaver diversity index of the Ecological Land Units appearing within a core. An Ecological Land Unit is an area of distinct bioclimate, landform, lithology and land cover. The data are available from the USGS at http://rmgsc.cr.usgs.gov/outgoing/ ecosystems/Global. Greater diversity is frequently associated with better habitat potential.",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 15,
+      "label": "Ecologically Relevant Landforms SWDI",
+      "help": "The Shannon-Weaver diversity index of the Theobald Ecologically Relevant Landforms appearing within a core. From Theobald DM, Harrison-Atlas D, Monahan WB, Albano, CM (2015) Ecologically-Relevant Landforms and Physiographic Diversity for Climate Adaptation Planning. PLoS One 10(12):e0143619. doi: 10.1371/journal.pone.0143619. Greater diversity is frequently associated with better habitat potential.",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 19,
+      "label": "Landform Variety",
+      "help": "An indicator of the variety of landforms within a core from the Karagulle/Frye method. These are “local” representations of Hammond’s Landform Classification categories.",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 16,
+      "label": "Forest Percentage (NLCD)",
+      "help": "The percent of Forested land (From NLCD of deciduous (41), evergreen (42), mixed (43) ) within a core. These are from the 2011 National Land Cover Database http://www.mrlc.gov/nlcd2011.php",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 17,
+      "label": "Grass/Herbaceous Percentage (NLCD)",
+      "help": "The percent of Grass/Herbaceous land (From NLCD of grass/herb (71), sedge/herb (72), lichens (73), moss (74)) within a core. These are from the 2011 National Land Cover Database http://www.mrlc.gov/nlcd2011.php",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 21,
+      "label": "Shrub/Scrub Percentage (NLCD)",
+      "help": "The percent of Shrub/Scrub land (From NLCD of dwarf scrub (51), shrub/scrub(52) ) within a core. These are from the 2011 National Land Cover Database http://www.mrlc.gov/nlcd2011.php",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
+      }
+    },
+    {
+      "rasterId": 25,
+      "label": "Wetlands Percentage (NLCD)",
+      "help": "The percent of Wetlands (From NLCD of woody wetlands (90), emergent herbaceous (95) ) within a core. These are from the 2011 National Land Cover Database http://www.mrlc.gov/nlcd2011.php",
+      "values": {
+        "GI Center Defaults": 0,
+        "Biodiversity Defaults": 0
       }
     }
   ]
