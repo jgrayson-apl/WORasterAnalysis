@@ -212,7 +212,7 @@ body * {
   flex-direction  : column;
   justify-content : flex-start;
   overflow-x      : hidden;
-  overflow-y      : auto;
+  overflow-y      : scroll;
 }
 
 .parameter-node {

@@ -293,6 +293,7 @@ define([
             if(parameterInfoIdx > (this.parameterInfos.length / 2)){
               paramNode.classList.remove('tooltip-bottom');
               paramNode.classList.add('tooltip-top');
+              paramNode.classList.add('hideable', 'hide');
             }
 
             const labelNode = domConstruct.create('div', {
@@ -344,6 +345,7 @@ define([
           // TOGGLE HIDEABLE PARAMETER NODES //
           const parameterToggleBtn = document.getElementById('parameter-toggle-btn');
           parameterToggleBtn.addEventListener('click', () => {
+            parameterToggleBtn.innerHTML = (parameterToggleBtn.innerHTML === 'more') ? 'less' : 'more';
             document.querySelectorAll('.hideable').forEach(node => {
               node.classList.toggle('hide');
             });
