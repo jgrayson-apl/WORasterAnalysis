@@ -340,6 +340,15 @@ define([
 
           });
 
+
+          // TOGGLE HIDEABLE PARAMETER NODES //
+          const parameterToggleBtn = document.getElementById('parameter-toggle-btn');
+          parameterToggleBtn.addEventListener('click', () => {
+            document.querySelectorAll('.hideable').forEach(node => {
+              node.classList.toggle('hide');
+            });
+          });
+
           // RESOLVE //
           resolve();
         });
