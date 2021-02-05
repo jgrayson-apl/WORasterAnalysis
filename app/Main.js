@@ -31,12 +31,13 @@ define([
   "esri/widgets/Home",
   "esri/widgets/Search",
   "esri/widgets/Slider",
+  "esri/widgets/BasemapToggle",
   "esri/widgets/Expand",
   "Application/ApplicationParameters"
 ], function(calcite, declare, ApplicationBase,
             i18n, itemUtils, domHelper, domConstruct,
             esriRequest, IdentityManager, Evented, watchUtils, promiseUtils, Portal,
-            Home, Search, Slider, Expand, ApplicationParameters){
+            Home, Search, Slider, BasemapToggle, Expand, ApplicationParameters){
 
   return declare([Evented], {
 
@@ -126,6 +127,13 @@ define([
         // HOME //
         const home = new Home({ view: view });
         view.ui.add(home, { position: "top-left", index: 1 });
+
+        // BASEMAP TOGGLE //
+        const basemapToggle = new BasemapToggle({
+          view: view,
+          nextBasemap: "topo"
+        });
+        view.ui.add(basemapToggle, { position: "top-right", index: 0 });
 
         // PANEL TOGGLE //
         this.initializePanelToggle();
@@ -437,7 +445,7 @@ define([
 
       // DO INITIAL ANALYSIS //
       this.emit("weight-change", {});
-      doAnalysis();
+      setTimeout(doAnalysis, 500);
 
     }
 
