@@ -480,19 +480,17 @@ define([
 
       // SKETCH PANEL //
       const sketchPanel = domConstruct.create('div', { className: 'panel panel-theme' });
-
       // SKETCH LABEL //
       const labelNode = domConstruct.create('div', { className: 'font-size-0', innerHTML: actionLabel }, sketchPanel);
       // ACTIONS NODE //
       const actionsNode = domConstruct.create('div', { className: 'content-row' }, sketchPanel);
       // TYPE SYMBOL //
-      const typeSymbol = domConstruct.create('div', { className: 'sketch-type-symbol-node margin-right-quarterX' }, actionsNode);
+      const typeSymbol = domConstruct.create('div', { className: 'sketch-type-symbol-node' }, actionsNode);
       // TYPE SELECT //
       const typeSelect = domConstruct.create('select', { className: 'sketch-select margin-right-1', title: 'select the type of sketch' }, actionsNode);
 
-
       // SKETCH LAYER //
-      const sketchLayer = new GraphicsLayer({ title: actionLabel, opacity: 0.8 });
+      const sketchLayer = new GraphicsLayer({ title: actionLabel, opacity: 0.9 });
       view.map.add(sketchLayer);
 
       // SKETCH WIDGET //
@@ -521,20 +519,23 @@ define([
       federalLandsLayer.load().then(() => {
         const symbolByValue = new Map();
         federalLandsLayer.renderer.uniqueValueInfos.forEach(uvInfo => {
+          // SELECT OPTION //
           domConstruct.create('option', { value: uvInfo.value, innerHTML: uvInfo.label }, typeSelect);
-
           // TWEAK SKETCH SYMBOL //
+          const fillOpacity = 0.3;
           const sketchSymbol = uvInfo.symbol.clone();
           sketchSymbol.set({
-            color: `rgba(${sketchSymbol.color.r},${sketchSymbol.color.g},${sketchSymbol.color.b},0.3)`,
+            color: `rgba(${sketchSymbol.color.r},${sketchSymbol.color.g},${sketchSymbol.color.b},${fillOpacity})`,
             outline: { color: sketchSymbol.color, width: 1.8 }
           });
-
+          // SKETCH SYMBOL BY VALUE //
           symbolByValue.set(uvInfo.value, sketchSymbol);
         });
         typeSelect.addEventListener('change', () => {
+          // SET SKETCH SYMBOL //
           setSketchSymbol(symbolByValue.get(typeSelect.value));
         });
+        // SET INITIAL SKETCH SYMBOL //
         setSketchSymbol(Array.from(symbolByValue.values())[0]);
       });
 
@@ -543,9 +544,7 @@ define([
 
       // DELETE SKETCH //
       const deleteBtn = domConstruct.create('button', { className: 'btn-link icon-ui-trash text-white margin-left-1', title: 'delete all sketches' }, actionsNode);
-      deleteBtn.addEventListener('click', () => {
-        sketchLayer.removeAll();
-      });
+      deleteBtn.addEventListener('click', () => { sketchLayer.removeAll(); });
 
       // SKETCH EXPAND //
       const sketchExpand = new Expand({
@@ -556,6 +555,7 @@ define([
         expandTooltip: actionLabel
       });
       sketchExpand.watch('expanded', expanded => {
+        // DISABLE SELECT/UPDATE/DELETE SKETCH EVENTS WHEN NOT EXPANDED //
         sketch.viewModel.updateOnGraphicClick = expanded;
       })
       view.ui.add(sketchExpand, { position: 'top-right', index: 1 });
