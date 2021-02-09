@@ -245,3 +245,14 @@ body * {
 .esri-slider__anchor:focus .esri-slider__thumb {
   border-color : var(--theme-background-color);
 }
+
+.sketch-select {
+  margin : 0;
+}
+
+.sketch-type-symbol-node {
+  z-index          : 99;
+  margin-top       : 1px;
+  padding          : 4px 5px 1px 5px;
+  background-color : #fefefe;
+}

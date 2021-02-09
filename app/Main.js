@@ -28,6 +28,9 @@ define([
   "esri/core/watchUtils",
   "esri/core/promiseUtils",
   "esri/portal/Portal",
+  "esri/layers/GraphicsLayer",
+  "esri/widgets/Sketch",
+  "esri/symbols/support/symbolUtils",
   "esri/widgets/Home",
   "esri/widgets/Search",
   "esri/widgets/Slider",
@@ -37,6 +40,7 @@ define([
 ], function(calcite, declare, ApplicationBase,
             i18n, itemUtils, domHelper, domConstruct,
             esriRequest, IdentityManager, Evented, watchUtils, promiseUtils, Portal,
+            GraphicsLayer, Sketch, symbolUtils,
             Home, Search, Slider, BasemapToggle, Expand, ApplicationParameters){
 
   return declare([Evented], {
@@ -258,6 +262,9 @@ define([
           // ANALYSIS //
           this.initializeAnalysis(view, rasterAnalysisLayer);
 
+          // SKETCH TOOLS //
+          this.initializeSketchTools(view);
+
           // RESOLVE //
           resolve();
         });
@@ -458,6 +465,100 @@ define([
       // DO INITIAL ANALYSIS //
       this.emit("weight-change", {});
       setTimeout(doAnalysis, 500);
+
+    },
+
+    /**
+     * SKETCH TOOLS
+     *
+     * @param view
+     */
+    initializeSketchTools: function(view){
+
+      // ACTION LABEL //
+      const actionLabel = 'Sketch Federal Lands';
+
+      // SKETCH PANEL //
+      const sketchPanel = domConstruct.create('div', { className: 'panel panel-theme' });
+
+      // SKETCH LABEL //
+      const labelNode = domConstruct.create('div', { className: 'font-size-0', innerHTML: actionLabel }, sketchPanel);
+      // ACTIONS NODE //
+      const actionsNode = domConstruct.create('div', { className: 'content-row' }, sketchPanel);
+      // TYPE SYMBOL //
+      const typeSymbol = domConstruct.create('div', { className: 'sketch-type-symbol-node margin-right-quarterX' }, actionsNode);
+      // TYPE SELECT //
+      const typeSelect = domConstruct.create('select', { className: 'sketch-select margin-right-1', title: 'select the type of sketch' }, actionsNode);
+
+
+      // SKETCH LAYER //
+      const sketchLayer = new GraphicsLayer({ title: actionLabel, opacity: 0.8 });
+      view.map.add(sketchLayer);
+
+      // SKETCH WIDGET //
+      const sketch = new Sketch({
+        container: domConstruct.create('div', {}, actionsNode),
+        view: view,
+        layer: sketchLayer,
+        availableCreateTools: ['polygon', 'rectangle', 'circle'],
+        creationMode: 'single',
+        defaultCreateOptions: {},
+        defaultUpdateOptions: { toggleToolOnClick: false, multipleSelectionEnabled: false },
+        visibleElements: { undoRedoMenu: false, selectionTools: { 'rectangle-selection': false, "lasso-selection": false } }
+      });
+      // DISABLE UPDATE //
+      sketch.viewModel.updateOnGraphicClick = false;
+
+      // SET SKETCH SYMBOL //
+      const setSketchSymbol = (symbol) => {
+        sketch.viewModel.polygonSymbol = symbol;
+        typeSymbol.innerHTML = '';
+        symbolUtils.renderPreviewHTML(symbol, { node: typeSymbol, size: 16 });
+      };
+
+      // FEDERAL LANDS LAYER //
+      const federalLandsLayer = view.map.layers.find(layer => { return (layer.title === "USA Federal Lands"); });
+      federalLandsLayer.load().then(() => {
+        const symbolByValue = new Map();
+        federalLandsLayer.renderer.uniqueValueInfos.forEach(uvInfo => {
+          domConstruct.create('option', { value: uvInfo.value, innerHTML: uvInfo.label }, typeSelect);
+
+          // TWEAK SKETCH SYMBOL //
+          const sketchSymbol = uvInfo.symbol.clone();
+          sketchSymbol.set({
+            color: `rgba(${sketchSymbol.color.r},${sketchSymbol.color.g},${sketchSymbol.color.b},0.3)`,
+            outline: { color: sketchSymbol.color, width: 1.8 }
+          });
+
+          symbolByValue.set(uvInfo.value, sketchSymbol);
+        });
+        typeSelect.addEventListener('change', () => {
+          setSketchSymbol(symbolByValue.get(typeSelect.value));
+        });
+        setSketchSymbol(Array.from(symbolByValue.values())[0]);
+      });
+
+      // MISUSE UPDATE/SELECT TO DELETE WHEN SELECTED //
+      sketch.on('update', () => { sketch.delete(); });
+
+      // DELETE SKETCH //
+      const deleteBtn = domConstruct.create('button', { className: 'btn-link icon-ui-trash text-white margin-left-1', title: 'delete all sketches' }, actionsNode);
+      deleteBtn.addEventListener('click', () => {
+        sketchLayer.removeAll();
+      });
+
+      // SKETCH EXPAND //
+      const sketchExpand = new Expand({
+        view: view,
+        content: sketchPanel,
+        expanded: false,
+        expandIconClass: "esri-icon-edit",
+        expandTooltip: actionLabel
+      });
+      sketchExpand.watch('expanded', expanded => {
+        sketch.viewModel.updateOnGraphicClick = expanded;
+      })
+      view.ui.add(sketchExpand, { position: 'top-right', index: 1 });
 
     }
 
